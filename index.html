@@ -1,475 +1,570 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Help Pendaki - Plan Your Mountain Adventure</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* CSS Variables - Design System */
-    :root {
-      --color-primary: #1E3A5F;
-      --color-on-primary: #FFFFFF;
-      --color-secondary: #2563EB;
-      --color-on-secondary: #FFFFFF;
-      --color-accent: #059669;
-      --color-on-accent: #000000;
-      --color-background: #F8FAFC;
-      --color-foreground: #0F172A;
-      --color-card: #FFFFFF;
-      --color-card-foreground: #0F172A;
-      --color-muted: #F1F3F5;
-      --color-muted-foreground: #475569;
-      --color-border: #E4E7EB;
-      --color-destructive: #DC2626;
-      --color-on-destructive: #FFFFFF;
-      --color-ring: #1E3A5F;
-      
-      --space-xs: 0.25rem;
-      --space-sm: 0.5rem;
-      --space-md: 1rem;
-      --space-lg: 1.5rem;
-      --space-xl: 2rem;
-      --space-2xl: 3rem;
-      --space-3xl: 4rem;
-      
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-      --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
-      
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-xl: 16px;
-      
-      --font-heading: 'Outfit', sans-serif;
-      --font-body: 'Work Sans', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help Pendaki</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #18191b;
+  --surface: #222427;
+  --ink: #eff0f1;
+  --muted: #9c9ea3;
+  --accent: #ff4a1f;
+  --accent-ink: #18191b;
+  --field-1: #eff0f1;
+  --field-1-ink: #18191b;
+  --font: 'General Sans', sans-serif;
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-hero: clamp(5rem, 10vw, 10rem);
+}
 
-    /* Dark mode */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --color-background: #0F172A;
-        --color-foreground: #F8FAFC;
-        --color-card: #1E293B;
-        --color-card-foreground: #F8FAFC;
-        --color-muted: #334155;
-        --color-muted-foreground: #94A3B8;
-        --color-border: #334155;
-      }
-    }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* Reset & Base */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+html { scroll-behavior: smooth; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
 
-    body {
-      font-family: var(--font-body);
-      background-color: var(--color-background);
-      color: var(--color-foreground);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+img { max-width: 100%; height: auto; display: block; }
 
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-heading);
-      font-weight: 600;
-      line-height: 1.2;
-    }
+a { color: var(--ink); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-    a {
-      color: var(--color-primary);
-      text-decoration: none;
-    }
+/* Navigation */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  background: transparent;
+}
 
-    a:hover {
-      text-decoration: underline;
-    }
+.nav-wordmark {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
 
-    /* Layout */
-    .app {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 var(--space-md);
-    }
+.nav-link {
+  font-size: 15px;
+  color: var(--muted);
+}
+.nav-link:hover { color: var(--ink); }
 
-    /* Header */
-    .header {
-      padding: var(--space-lg) 0;
-      border-bottom: 1px solid var(--color-border);
-      margin-bottom: var(--space-xl);
-    }
+/* Hero */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 32px 200px;
+  overflow: hidden;
+}
 
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.15;
+}
 
-    .logo {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--color-primary);
-    }
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+}
 
-    .logo span {
-      color: var(--color-accent);
-    }
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+}
 
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 24px;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 200ms ease;
-      border: none;
-      font-family: var(--font-body);
-    }
+.hero h1 {
+  font-size: var(--step-hero);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
 
-    .btn:hover {
-      transform: translateY(-1px);
-    }
+.hero p {
+  font-size: var(--step-lead);
+  color: var(--muted);
+  max-width: 46ch;
+  margin: 0 auto 48px;
+}
 
-    .btn-primary {
-      background: var(--color-accent);
-      color: white;
-    }
+/* Tabbed folder stack */
+.folders {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
+  max-width: 1100px;
+  z-index: 2;
+}
 
-    .btn-primary:hover {
-      opacity: 0.9;
-      text-decoration: none;
-    }
+.folder {
+  position: relative;
+  width: 100%;
+  padding: 48px 40px 32px;
+  margin-bottom: -48px;
+  cursor: pointer;
+  transition: transform 200ms ease;
+}
 
-    .btn-secondary {
-      background: transparent;
-      color: var(--color-primary);
-      border: 2px solid var(--color-primary);
-    }
+.folder:hover { transform: translateY(-8px); }
 
-    .btn-secondary:hover {
-      background: var(--color-primary);
-      color: white;
-      text-decoration: none;
-    }
+.folder:last-child { margin-bottom: 0; }
 
-    .btn-ghost {
-      background: transparent;
-      color: var(--color-muted-foreground);
-      padding: 8px 16px;
-    }
+.folder-tab {
+  position: absolute;
+  top: -40px;
+  left: 40px;
+  height: 40px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  clip-path: polygon(0 100%, 8px 0, calc(100% - 8px) 0, 100% 100%);
+}
 
-    .btn-ghost:hover {
-      color: var(--color-foreground);
-      background: var(--color-muted);
-      text-decoration: none;
-    }
+.folder-1 { background: #2a2d31; }
+.folder-1 .folder-tab { background: #3a3e44; color: var(--muted); }
 
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: var(--space-3xl) var(--space-md);
-      margin-bottom: var(--space-2xl);
-    }
+.folder-2 { background: #32363b; }
+.folder-2 .folder-tab { background: #42484f; color: var(--muted); }
 
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      margin-bottom: var(--space-md);
-      color: var(--color-primary);
-    }
+.folder-3 { background: #3a3f45; }
+.folder-3 .folder-tab { background: #4a5058; color: var(--muted); }
 
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--color-muted-foreground);
-      max-width: 600px;
-      margin: 0 auto var(--space-xl);
-    }
+.folder-4 { background: #42484f; }
+.folder-4 .folder-tab { background: #525860; color: var(--muted); }
 
-    /* Search */
-    .search-container {
-      max-width: 600px;
-      margin: 0 auto var(--space-2xl);
-      position: relative;
-    }
+.folder-5 { background: var(--surface); padding-bottom: 48px; }
+.folder-5 .folder-tab { background: var(--accent); color: var(--accent-ink); }
 
-    .search-input {
-      width: 100%;
-      padding: 16px 24px;
-      padding-left: 48px;
-      border: 2px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      font-size: 1rem;
-      font-family: var(--font-body);
-      background: var(--color-card);
-      color: var(--color-foreground);
-      transition: border-color 200ms ease, box-shadow 200ms ease;
-    }
+.folder-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
 
-    .search-input:focus {
-      outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.2);
-    }
+.folder-text {
+  font-size: var(--step-body);
+  color: var(--muted);
+  max-width: 50ch;
+}
 
-    .search-icon {
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--color-muted-foreground);
-      pointer-events: none;
-    }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 32px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  transition: opacity 200ms ease;
+}
 
-    /* Panels */
-    .panels {
-      display: flex;
-      gap: var(--space-md);
-      justify-content: center;
-      margin-bottom: var(--space-2xl);
-      flex-wrap: wrap;
-    }
+.btn:hover { opacity: 0.9; text-decoration: none; }
 
-    .panel-btn {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      padding: 12px 20px;
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      transition: all 200ms ease;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      color: var(--color-foreground);
-    }
+/* Mountains section */
+.mountains {
+  padding: 120px 32px;
+  background: var(--field-1);
+  color: var(--field-1-ink);
+}
 
-    .panel-btn:hover {
-      border-color: var(--color-primary);
-      box-shadow: var(--shadow-md);
-    }
+.mountains-header {
+  max-width: 1200px;
+  margin: 0 auto 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
 
-    .panel-btn.active {
-      background: var(--color-primary);
-      color: white;
-      border-color: var(--color-primary);
-    }
+.mountains h2 {
+  font-size: var(--step-head);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
 
-    /* Panel Content */
-    .panel-content {
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-xl);
-      margin-bottom: var(--space-2xl);
-      display: none;
-    }
+.mountain-count {
+  font-size: var(--step-body);
+  color: #666;
+}
 
-    .panel-content.active {
-      display: block;
-    }
+.mountain-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
-    .panel-content h2 {
-      margin-bottom: var(--space-md);
-      color: var(--color-primary);
-    }
+.mountain-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 32px;
+  align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: padding-left 200ms ease;
+}
 
-    /* Mountain List */
-    .mountains-section {
-      margin-bottom: var(--space-3xl);
-    }
+.mountain-item:hover {
+  padding-left: 16px;
+  background: #f5f5f5;
+}
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-lg);
-    }
+.mountain-item:first-child { border-top: 1px solid #ddd; }
 
-    .section-header h2 {
-      font-size: 1.5rem;
-    }
+.mountain-name {
+  font-size: var(--step-lead);
+  font-weight: 500;
+}
 
-    .mountain-count {
-      color: var(--color-muted-foreground);
-      font-size: 0.9rem;
-    }
+.mountain-meta {
+  font-size: var(--step-small);
+  color: #666;
+  text-align: right;
+}
 
-    .mountain-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: var(--space-lg);
-    }
+.mountain-elevation {
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: var(--step-body);
+  font-weight: 500;
+  text-align: right;
+  min-width: 100px;
+}
 
-    /* Mountain Card */
-    .mountain-card {
-      background: var(--color-card);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-lg);
-      transition: all 200ms ease;
-      cursor: pointer;
-    }
+.mountain-difficulty {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
 
-    .mountain-card:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-2px);
-      border-color: var(--color-primary);
-    }
+.difficulty-easy { background: #059669; }
+.difficulty-moderate { background: #d97706; }
+.difficulty-hard { background: #dc2626; }
 
-    .mountain-card h3 {
-      font-size: 1.25rem;
-      margin-bottom: var(--space-sm);
-      color: var(--color-primary);
-    }
+/* Search */
+.search-wrap {
+  max-width: 1200px;
+  margin: 0 auto 48px;
+}
 
-    .mountain-meta {
-      display: flex;
-      gap: var(--space-md);
-      margin-bottom: var(--space-md);
-      font-size: 0.9rem;
-      color: var(--color-muted-foreground);
-    }
+.search-input {
+  width: 100%;
+  padding: 20px 24px;
+  font-family: var(--font);
+  font-size: var(--step-body);
+  background: transparent;
+  border: 2px solid #ccc;
+  color: var(--field-1-ink);
+  outline: none;
+  transition: border-color 200ms ease;
+}
 
-    .mountain-meta span {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+.search-input:focus { border-color: var(--field-1-ink); }
 
-    .mountain-description {
-      color: var(--color-muted-foreground);
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: var(--space-md);
-    }
+.search-input::placeholder { color: #999; }
 
-    .mountain-tags {
-      display: flex;
-      gap: var(--space-sm);
-      flex-wrap: wrap;
-    }
+/* Features section */
+.features {
+  padding: 120px 32px;
+  background: var(--bg);
+}
 
-    .tag {
-      padding: 4px 12px;
-      background: var(--color-muted);
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      color: var(--color-muted-foreground);
-    }
+.features-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
 
-    .tag-difficulty-easy {
-      background: #D1FAE5;
-      color: #065F46;
-    }
+.feature {
+  position: relative;
+  padding-top: 32px;
+}
 
-    .tag-difficulty-moderate {
-      background: #FEF3C7;
-      color: #92400E;
-    }
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  background: var(--accent);
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 100%, 0 100%);
+}
 
-    .tag-difficulty-hard {
-      background: #FEE2E2;
-      color: #991B1B;
-    }
+.feature h3 {
+  font-size: var(--step-lead);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: var(--space-2xl) var(--space-md);
-      border-top: 1px solid var(--color-border);
-      color: var(--color-muted-foreground);
-      font-size: 0.9rem;
-    }
+.feature p {
+  font-size: var(--step-body);
+  color: var(--muted);
+  line-height: 1.6;
+}
 
-    /* Loading & Error States */
-    .loading {
-      text-align: center;
-      padding: var(--space-3xl);
-      color: var(--color-muted-foreground);
-    }
+/* About section */
+.about {
+  padding: 120px 32px;
+  background: var(--surface);
+}
 
-    .error {
-      text-align: center;
-      padding: var(--space-3xl);
-    }
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
 
-    .error h2 {
-      color: var(--color-destructive);
-      margin-bottom: var(--space-md);
-    }
+.about-image {
+  position: relative;
+  clip-path: polygon(8% 0, 100% 0, 100% 92%, 92% 100%, 0 100%, 0 8%);
+}
 
-    /* Responsive */
-    @media (max-width: 640px) {
-      .mountain-grid {
-        grid-template-columns: 1fr;
-      }
+.about-image img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  filter: grayscale(30%);
+}
 
-      .hero {
-        padding: var(--space-xl) var(--space-md);
-      }
+.about-text h2 {
+  font-size: var(--step-head);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
 
-      .panels {
-        flex-direction: column;
-        align-items: stretch;
-      }
+.about-text p {
+  font-size: var(--step-body);
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
 
-      .panel-btn {
-        justify-content: center;
-      }
-    }
+/* Footer */
+.footer {
+  padding: 64px 32px;
+  background: var(--bg);
+  border-top: 1px solid #333;
+}
 
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
 
-    /* Focus visible */
-    :focus-visible {
-      outline: 2px solid var(--color-ring);
-      outline-offset: 2px;
-    }
-  </style>
+.footer-wordmark {
+  font-size: var(--step-head);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.credits {
+  font-size: var(--step-small);
+  color: var(--muted);
+  max-width: 60ch;
+  text-align: right;
+}
+
+.credits a { color: var(--muted); text-decoration: underline; }
+.credits a:hover { color: var(--ink); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav { padding: 16px 20px; }
+  .hero { padding: 100px 20px 180px; }
+  .hero h1 { font-size: clamp(3rem, 12vw, 5rem); }
+  
+  .folders { width: 92%; }
+  .folder { padding: 32px 24px 24px; }
+  .folder-content { flex-direction: column; gap: 16px; }
+  
+  .mountains { padding: 80px 20px; }
+  .mountains-header { flex-direction: column; gap: 8px; margin-bottom: 40px; }
+  
+  .mountain-item {
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    padding: 20px 0;
+  }
+  .mountain-meta, .mountain-elevation { display: none; }
+  
+  .features-grid { grid-template-columns: 1fr; gap: 40px; }
+  .features { padding: 80px 20px; }
+  
+  .about-content { grid-template-columns: 1fr; gap: 40px; }
+  .about { padding: 80px 20px; }
+  
+  .footer-content { flex-direction: column; gap: 24px; }
+  .credits { text-align: left; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+</style>
 </head>
 <body>
-  <div class="app">
-    <!-- Header -->
-    <header class="header">
-      <div class="header-content">
-        <a href="#/" class="logo">Help <span>Pendaki</span></a>
-      </div>
-    </header>
 
-    <!-- Main Content Area -->
-    <main id="app-container">
-      <!-- Content will be rendered by router -->
-    </main>
+<nav class="nav">
+  <div class="nav-wordmark">Help Pendaki</div>
+  <a href="#about" class="nav-link">About</a>
+</nav>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <p> Help Pendaki. Plan your adventure safely.</p>
-    </footer>
+<section class="hero">
+  <div class="hero-bg">
+    <img src="assets/mahameru-the-great-mountaun.jpg" alt="Mahameru summit at dawn, Semeru volcano" width="1920" height="1440">
   </div>
+  <div class="hero-content">
+    <h1>Plan Your Summit</h1>
+    <p>Seven Indonesian volcanoes. Real trail data. Tools that keep you safe on the mountain.</p>
+  </div>
+  
+  <div class="folders">
+    <div class="folder folder-1" onclick="scrollToSection('mountains')">
+      <div class="folder-tab">Mountains</div>
+      <div class="folder-content">
+        <p class="folder-text">Browse 7 peaks from Java to Lombok</p>
+      </div>
+    </div>
+    <div class="folder folder-2" onclick="scrollToSection('features')">
+      <div class="folder-tab">Tools</div>
+      <div class="folder-content">
+        <p class="folder-text">GPX upload, elevation profiles, supply calculator</p>
+      </div>
+    </div>
+    <div class="folder folder-3" onclick="scrollToSection('about')">
+      <div class="folder-tab">About</div>
+      <div class="folder-content">
+        <p class="folder-text">Built for Indonesian hikers, with verified data</p>
+      </div>
+    </div>
+    <div class="folder folder-4">
+      <div class="folder-tab">Rate</div>
+      <div class="folder-content">
+        <p class="folder-text">How was your hike? Rate the app</p>
+      </div>
+    </div>
+    <div class="folder folder-5" onclick="scrollToSection('mountains')">
+      <div class="folder-tab">Start</div>
+      <div class="folder-content">
+        <p class="folder-text">Pick a mountain and start planning</p>
+        <button class="btn">Browse Mountains</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script type="module" src="js/app.js"></script>
+<section class="mountains" id="mountains">
+  <div class="mountains-header">
+    <h2>Mountains</h2>
+    <span class="mountain-count">7 peaks</span>
+  </div>
+  
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="mountain-search" placeholder="Search by name or region..." autocomplete="off">
+  </div>
+  
+  <div class="mountain-list" id="mountain-list">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="features-grid">
+    <div class="feature">
+      <h3>GPX Upload</h3>
+      <p>Drop a track file and see distance, ascent, descent, and estimated hiking time. Works with trkpt and rtept.</p>
+    </div>
+    <div class="feature">
+      <h3>Live GPS</h3>
+      <p>Track your position on the route during the hike. No map tiles needed, works offline.</p>
+    </div>
+    <div class="feature">
+      <h3>Supply Calculator</h3>
+      <p>Calculate food, water, and gear for your group size and trip duration. Per-mountain checklists included.</p>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-content">
+    <div class="about-image">
+      <img src="assets/pesona-kabut-bromo.jpg" alt="Bromo volcano in morning mist" width="1920" height="1280" loading="lazy">
+    </div>
+    <div class="about-text">
+      <h2>Built for Indonesian Trails</h2>
+      <p>Help Pendaki is a hiking planner for Indonesia's volcanoes. We provide trail data, GPX analysis, and supply calculations for seven major peaks.</p>
+      <p>All mountain facts carry a source and verification date. Data is stored in your browser. When you're ready, the same tools work with live backend data.</p>
+      <p>No account required. No tracking. Just the information you need to climb safely.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-wordmark">Help Pendaki</div>
+    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/w/index.php?curid=59909879">Mahameru</a> by Hendrojkson, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=133560460">Bromo</a> by Muhammad Iqbal, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=90796897">Merapi</a> by Vendi rizki k, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. All via Wikimedia Commons.</p>
+  </div>
+</footer>
+
+<script type="module" src="js/app.js"></script>
 </body>
 </html>
