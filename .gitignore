@@ -1,4 +1,26 @@
+# Environment variables
 .env
 .env.*
+!.env.example
+
+# Dependencies
 node_modules/
+
+# Build output
+dist/
 .next/
+out/
+
+# Logs
+*.log
+logs/
+
+# Credentials and keys
+*.pem
+*.key
+*service-account*.json
+
+# OS and editor files
+.DS_Store
+.vscode/
+.idea/
