@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Help, Pendaki
 
-## Getting Started
+Aplikasi PWA untuk pendaki gunung Indonesia.
 
-First, run the development server:
+## Fitur
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Direktori gunung dan jalur pendakian
+- Informasi status jalur (buka/tutup/terbatas)
+- Peta rute dengan GPX
+- Kalkulator logistik
+- Checklist perlengkapan
+- Informasi cuaca
+- Mode offline
+
+## Tech Stack
+
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Supabase (PostgreSQL)
+- Dexie.js (IndexedDB)
+- Serwist (PWA)
+
+## Struktur Folder
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── page.tsx           # Beranda
+│   ├── gunung/[slug]/     # Detail gunung
+│   ├── offline/           # Halaman offline
+│   ├── layout.tsx         # Layout utama
+│   ├── manifest.ts        # PWA manifest
+│   └── sw.ts              # Service worker
+├── components/
+│   └── mountain/
+│       └── MountainCard.tsx
+├── lib/
+│   ├── supabase/          # Koneksi Supabase
+│   │   ├── client.ts
+│   │   └── server.ts
+│   └── offline/           # Database offline
+│       └── db.ts
+├── types/
+│   └── database.ts        # Tipe TypeScript
+└── app/globals.css        # Tailwind CSS
+
+supabase/
+├── migrations/
+│   └── 0001_init.sql      # Skema database
+└── seed/
+    └── seed.sql            # Data awal
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Copy `.env.example` ke `.env.local` dan isi dengan kredensial Supabase
+4. Jalankan migrasi database di Supabase Dashboard
+5. Jalankan seed data
+6. Start development server:
+   ```bash
+   npm run dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploy
 
-## Learn More
+1. Push ke GitHub
+2. Import ke Vercel
+3. Tambahkan environment variables
+4. Deploy
 
-To learn more about Next.js, take a look at the following resources:
+## Roadmap
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Fase 1 (Kerangka) ✅
+- [x] Setup project
+- [x] Database schema
+- [x] Halaman beranda
+- [x] Halaman detail gunung
+- [x] PWA configuration
+- [x] Offline database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Fase 2 (Fitur Inti)
+- [ ] Kalkulator logistik
+- [ ] Checklist perlengkapan
+- [ ] Upload dan parse GPX
+- [ ] Peta dengan MapLibre
 
-## Deploy on Vercel
+### Fase 3 (Komunitas)
+- [ ] Autentikasi
+- [ ] Ulasan
+- [ ] Komparasi rute
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Lisensi
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
