@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help Pendaki</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #18191b;
+  --surface: #222427;
+  --ink: #eff0f1;
+  --muted: #9c9ea3;
+  --accent: #ff4a1f;
+  --accent-ink: #18191b;
+  --field-1: #eff0f1;
+  --field-1-ink: #18191b;
+  --font: 'General Sans', sans-serif;
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-hero: clamp(5rem, 10vw, 10rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--ink); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Navigation */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  background: transparent;
+}
+
+.nav-wordmark {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.nav-link {
+  font-size: 15px;
+  color: var(--muted);
+}
+.nav-link:hover { color: var(--ink); }
+
+/* Hero */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 32px 200px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.15;
+}
+
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+}
+
+.hero h1 {
+  font-size: var(--step-hero);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.hero p {
+  font-size: var(--step-lead);
+  color: var(--muted);
+  max-width: 46ch;
+  margin: 0 auto 48px;
+}
+
+/* Tabbed folder stack */
+.folders {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
+  max-width: 1100px;
+  z-index: 2;
+}
+
+.folder {
+  position: relative;
+  width: 100%;
+  padding: 48px 40px 32px;
+  margin-bottom: -48px;
+  cursor: pointer;
+  transition: transform 200ms ease;
+}
+
+.folder:hover { transform: translateY(-8px); }
+
+.folder:last-child { margin-bottom: 0; }
+
+.folder-tab {
+  position: absolute;
+  top: -40px;
+  left: 40px;
+  height: 40px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  clip-path: polygon(0 100%, 8px 0, calc(100% - 8px) 0, 100% 100%);
+}
+
+.folder-1 { background: #2a2d31; }
+.folder-1 .folder-tab { background: #3a3e44; color: var(--muted); }
+
+.folder-2 { background: #32363b; }
+.folder-2 .folder-tab { background: #42484f; color: var(--muted); }
+
+.folder-3 { background: #3a3f45; }
+.folder-3 .folder-tab { background: #4a5058; color: var(--muted); }
+
+.folder-4 { background: #42484f; }
+.folder-4 .folder-tab { background: #525860; color: var(--muted); }
+
+.folder-5 { background: var(--surface); padding-bottom: 48px; }
+.folder-5 .folder-tab { background: var(--accent); color: var(--accent-ink); }
+
+.folder-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.folder-text {
+  font-size: var(--step-body);
+  color: var(--muted);
+  max-width: 50ch;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 32px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  transition: opacity 200ms ease;
+}
+
+.btn:hover { opacity: 0.9; text-decoration: none; }
+
+/* Mountains section */
+.mountains {
+  padding: 120px 32px;
+  background: var(--field-1);
+  color: var(--field-1-ink);
+}
+
+.mountains-header {
+  max-width: 1200px;
+  margin: 0 auto 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.mountains h2 {
+  font-size: var(--step-head);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.mountain-count {
+  font-size: var(--step-body);
+  color: #666;
+}
+
+.mountain-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mountain-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 32px;
+  align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: padding-left 200ms ease;
+}
+
+.mountain-item:hover {
+  padding-left: 16px;
+  background: #f5f5f5;
+}
+
+.mountain-item:first-child { border-top: 1px solid #ddd; }
+
+.mountain-name {
+  font-size: var(--step-lead);
+  font-weight: 500;
+}
+
+.mountain-meta {
+  font-size: var(--step-small);
+  color: #666;
+  text-align: right;
+}
+
+.mountain-elevation {
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: var(--step-body);
+  font-weight: 500;
+  text-align: right;
+  min-width: 100px;
+}
+
+.mountain-difficulty {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.difficulty-easy { background: #059669; }
+.difficulty-moderate { background: #d97706; }
+.difficulty-hard { background: #dc2626; }
+
+/* Search */
+.search-wrap {
+  max-width: 1200px;
+  margin: 0 auto 48px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 20px 24px;
+  font-family: var(--font);
+  font-size: var(--step-body);
+  background: transparent;
+  border: 2px solid #ccc;
+  color: var(--field-1-ink);
+  outline: none;
+  transition: border-color 200ms ease;
+}
+
+.search-input:focus { border-color: var(--field-1-ink); }
+
+.search-input::placeholder { color: #999; }
+
+/* Features section */
+.features {
+  padding: 120px 32px;
+  background: var(--bg);
+}
+
+.features-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+
+.feature {
+  position: relative;
+  padding-top: 32px;
+}
+
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  background: var(--accent);
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 100%, 0 100%);
+}
+
+.feature h3 {
+  font-size: var(--step-lead);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.feature p {
+  font-size: var(--step-body);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* About section */
+.about {
+  padding: 120px 32px;
+  background: var(--surface);
+}
+
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.about-image {
+  position: relative;
+  clip-path: polygon(8% 0, 100% 0, 100% 92%, 92% 100%, 0 100%, 0 8%);
+}
+
+.about-image img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  filter: grayscale(30%);
+}
+
+.about-text h2 {
+  font-size: var(--step-head);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.about-text p {
+  font-size: var(--step-body);
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* Footer */
+.footer {
+  padding: 64px 32px;
+  background: var(--bg);
+  border-top: 1px solid #333;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footer-wordmark {
+  font-size: var(--step-head);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.credits {
+  font-size: var(--step-small);
+  color: var(--muted);
+  max-width: 60ch;
+  text-align: right;
+}
+
+.credits a { color: var(--muted); text-decoration: underline; }
+.credits a:hover { color: var(--ink); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav { padding: 16px 20px; }
+  .hero { padding: 100px 20px 180px; }
+  .hero h1 { font-size: clamp(3rem, 12vw, 5rem); }
+  
+  .folders { width: 92%; }
+  .folder { padding: 32px 24px 24px; }
+  .folder-content { flex-direction: column; gap: 16px; }
+  
+  .mountains { padding: 80px 20px; }
+  .mountains-header { flex-direction: column; gap: 8px; margin-bottom: 40px; }
+  
+  .mountain-item {
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    padding: 20px 0;
+  }
+  .mountain-meta, .mountain-elevation { display: none; }
+  
+  .features-grid { grid-template-columns: 1fr; gap: 40px; }
+  .features { padding: 80px 20px; }
+  
+  .about-content { grid-template-columns: 1fr; gap: 40px; }
+  .about { padding: 80px 20px; }
+  
+  .footer-content { flex-direction: column; gap: 24px; }
+  .credits { text-align: left; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-wordmark">Help Pendaki</div>
+  <a href="#about" class="nav-link">About</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg">
+    <img src="assets/mahameru-the-great-mountaun.jpg" alt="Mahameru summit at dawn, Semeru volcano" width="1920" height="1440">
+  </div>
+  <div class="hero-content">
+    <h1>Plan Your Summit</h1>
+    <p>Seven Indonesian volcanoes. Real trail data. Tools that keep you safe on the mountain.</p>
+  </div>
+  
+  <div class="folders">
+    <div class="folder folder-1" onclick="scrollToSection('mountains')">
+      <div class="folder-tab">Mountains</div>
+      <div class="folder-content">
+        <p class="folder-text">Browse 7 peaks from Java to Lombok</p>
+      </div>
+    </div>
+    <div class="folder folder-2" onclick="scrollToSection('features')">
+      <div class="folder-tab">Tools</div>
+      <div class="folder-content">
+        <p class="folder-text">GPX upload, elevation profiles, supply calculator</p>
+      </div>
+    </div>
+    <div class="folder folder-3" onclick="scrollToSection('about')">
+      <div class="folder-tab">About</div>
+      <div class="folder-content">
+        <p class="folder-text">Built for Indonesian hikers, with verified data</p>
+      </div>
+    </div>
+    <div class="folder folder-4">
+      <div class="folder-tab">Rate</div>
+      <div class="folder-content">
+        <p class="folder-text">How was your hike? Rate the app</p>
+      </div>
+    </div>
+    <div class="folder folder-5" onclick="scrollToSection('mountains')">
+      <div class="folder-tab">Start</div>
+      <div class="folder-content">
+        <p class="folder-text">Pick a mountain and start planning</p>
+        <button class="btn">Browse Mountains</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mountains" id="mountains">
+  <div class="mountains-header">
+    <h2>Mountains</h2>
+    <span class="mountain-count">7 peaks</span>
+  </div>
+  
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="mountain-search" placeholder="Search by name or region..." autocomplete="off">
+  </div>
+  
+  <div class="mountain-list" id="mountain-list">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="features-grid">
+    <div class="feature">
+      <h3>GPX Upload</h3>
+      <p>Drop a track file and see distance, ascent, descent, and estimated hiking time. Works with trkpt and rtept.</p>
+    </div>
+    <div class="feature">
+      <h3>Live GPS</h3>
+      <p>Track your position on the route during the hike. No map tiles needed, works offline.</p>
+    </div>
+    <div class="feature">
+      <h3>Supply Calculator</h3>
+      <p>Calculate food, water, and gear for your group size and trip duration. Per-mountain checklists included.</p>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-content">
+    <div class="about-image">
+      <img src="assets/pesona-kabut-bromo.jpg" alt="Bromo volcano in morning mist" width="1920" height="1280" loading="lazy">
+    </div>
+    <div class="about-text">
+      <h2>Built for Indonesian Trails</h2>
+      <p>Help Pendaki is a hiking planner for Indonesia's volcanoes. We provide trail data, GPX analysis, and supply calculations for seven major peaks.</p>
+      <p>All mountain facts carry a source and verification date. Data is stored in your browser. When you're ready, the same tools work with live backend data.</p>
+      <p>No account required. No tracking. Just the information you need to climb safely.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-wordmark">Help Pendaki</div>
+    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/w/index.php?curid=59909879">Mahameru</a> by Hendrojkson, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=133560460">Bromo</a> by Muhammad Iqbal, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/w/index.php?curid=90796897">Merapi</a> by Vendi rizki k, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. All via Wikimedia Commons.</p>
+  </div>
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
